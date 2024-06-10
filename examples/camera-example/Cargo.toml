@@ -3,6 +3,7 @@ name = "camera-example"
 version = "0.1.0"
 authors = ["Mathias Pius <contact@pius.io>"]
 edition = "2021"
+resolver = "2"
 rust-version = "1.71"
 
 [profile.release]
@@ -12,15 +13,27 @@ opt-level = "s"
 debug = true    # Symbols are nice and they don't increase the size on Flash
 opt-level = "z"
 
+[features]
+default = ["std", "embassy", "esp-idf-svc/native"]
+
+pio = ["esp-idf-svc/pio"]
+std = ["alloc", "esp-idf-svc/binstart", "esp-idf-svc/std"]
+alloc = ["esp-idf-svc/alloc"]
+nightly = ["esp-idf-svc/nightly"]
+experimental = ["esp-idf-svc/experimental"]
+embassy = ["esp-idf-svc/embassy-sync", "esp-idf-svc/critical-section", "esp-idf-svc/embassy-time-driver"]
+
 [dependencies]
 log = { version = "0.4", default-features = false }
-anyhow = "1.0.82"
-esp-idf-svc = { version = "0.48", default-features = false, features = [
-    "binstart",
-    "std",
-] }
-esp-idf-sys = { version = "0.34.1" }
-esp-camera-rs = { git = "https://github.com/MathiasPius/esp-camera-rs.git" }
+anyhow = "1.0"
+esp-idf-svc = { version = "0.48", default-features = false }
+esp-idf-sys = "0.34"
+embedded-svc = "0.27"
+
+esp-camera-rs = { git = "https://github.com/mikhail-m1/esp-camera-rs.git" }
+# Uncomment next string to use local version of the lib.
+# You also need to run `git submodule init` and `git submodule update`
+#esp-camera-rs = { path = "../../" }
 
 [build-dependencies]
 embuild = "0.31.3"

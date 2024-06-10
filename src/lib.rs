@@ -225,7 +225,7 @@ pub struct Camera<'a> {
 
 impl<'a> Camera<'a> {
     pub fn new(
-        pin_pwdn: impl Peripheral<P = impl InputPin + OutputPin> + 'a,
+        pin_pwdn: Option<AnyOutputPin>,
         pin_xclk: impl Peripheral<P = impl InputPin + OutputPin> + 'a,
         pin_d0: impl Peripheral<P = impl InputPin + OutputPin> + 'a,
         pin_d1: impl Peripheral<P = impl InputPin + OutputPin> + 'a,
@@ -245,13 +245,13 @@ impl<'a> Camera<'a> {
         fb_location: camera::camera_fb_location_t,
     ) -> Result<Self, esp_idf_sys::EspError> {
         esp_idf_hal::into_ref!(
-            pin_pwdn, pin_xclk, pin_d0, pin_d1, pin_d2, pin_d3, pin_d4, pin_d5, pin_d6, pin_d7,
+            pin_xclk, pin_d0, pin_d1, pin_d2, pin_d3, pin_d4, pin_d5, pin_d6, pin_d7,
             pin_vsync, pin_href, pin_pclk, pin_sda, pin_scl
         );
         let config = camera::camera_config_t {
-            pin_pwdn: pin_pwdn.pin(),
+            pin_pwdn: pin_pwdn.map(|p| p.into_ref().pin()).unwrap_or(-1),
             pin_xclk: pin_xclk.pin(),
-            pin_reset: 0xff,
+            pin_reset: -1,
 
             pin_d0: pin_d0.pin(),
             pin_d1: pin_d1.pin(),
