@@ -1,5 +1,8 @@
-# I think larger stack size is required for rust? Not sure where I got this info
+# Rust often needs a bit of an extra main task stack size compared to C (the default is 3K)
 CONFIG_ESP_MAIN_TASK_STACK_SIZE=8000
 
-# Enable PSRAM, which allows us to store larger images
-CONFIG_ESP32_SPIRAM_SUPPORT=y
+CONFIG_ESP32S3_SPIRAM_SUPPORT=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_LWIP_LOCAL_HOSTNAME="esp-cam"
+CONFIG_PARTITION_TABLE_SINGLE_APP_LARGE=y
+

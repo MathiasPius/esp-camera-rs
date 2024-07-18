@@ -1,3 +1,4 @@
 /target
 /Cargo.lock
 /.embuild
+components_esp32s3.lock
